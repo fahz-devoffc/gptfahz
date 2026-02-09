@@ -57,8 +57,8 @@ export const generateImageWithGemini = async (prompt: string) => {
     config: { imageConfig: { aspectRatio: "1:1" } },
   });
 
-  // Iterating through parts as the image may not be the first part
-  for (const part of response.candidates?.[0]?.content.parts || []) {
+  // FIX: Added optional chaining for candidates?.[0]?.content?.parts
+  for (const part of response.candidates?.[0]?.content?.parts || []) {
     if (part.inlineData) {
       return `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`;
     }
