@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { GoogleGenAI, Modality } from '@google/genai';
 import { decodeBase64, decodeAudioData, encodePCM } from '../services/geminiService';
@@ -19,7 +20,6 @@ const CallInterface: React.FC<CallInterfaceProps> = ({ onClose, userAvatar }) =>
 
   const startCall = async () => {
     setStatus('calling');
-    // Correctly using process.env.API_KEY without fallback
     const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     
     audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)({ sampleRate: 24000 });
@@ -38,14 +38,14 @@ const CallInterface: React.FC<CallInterfaceProps> = ({ onClose, userAvatar }) =>
             processor.onaudioprocess = (e) => {
               const inputData = e.inputBuffer.getChannelData(0);
               const base64 = encodePCM(inputData);
-              // Sending media only after sessionPromise resolves
               sessionPromise.then(s => s.sendRealtimeInput({ media: { data: base64, mimeType: 'audio/pcm;rate=16000' } }));
             };
             source.connect(processor);
             processor.connect(inputContext.destination);
           },
           onmessage: async (msg) => {
-            const audioData = msg.serverContent?.modelTurn?.parts[0]?.inlineData?.data;
+            // FIX: Added optional chaining for array access parts?.[0]
+            const audioData = msg.serverContent?.modelTurn?.parts?.[0]?.inlineData?.data;
             if (audioData) {
               setIsAiSpeaking(true);
               const ctx = audioContextRef.current!;
