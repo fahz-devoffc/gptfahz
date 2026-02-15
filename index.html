@@ -1,338 +1,51 @@
+
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maintenance - FahzGPT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #6366f1;
-            --secondary: #a855f7;
-            --bg-dark: #0f172a;
-            --glass: rgba(255, 255, 255, 0.05);
-            --text-main: #f8fafc;
-            --text-dim: #94a3b8;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
-                radial-gradient(circle at 80% 70%, rgba(168, 85, 247, 0.15) 0%, transparent 40%);
-            color: var(--text-main);
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        /* Container Utama */
-        .container {
-            text-align: center;
-            padding: 2rem;
-            max-width: 600px;
-            width: 90%;
-            backdrop-filter: blur(10px);
-            background: var(--glass);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 30px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            animation: fadeIn 1s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            background: linear-gradient(to right, #818cf8, #c084fc);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 6px 16px;
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #f87171;
-            border-radius: 100px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        p {
-            color: var(--text-dim);
-            line-height: 1.6;
-            margin-bottom: 2rem;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        button {
-            padding: 12px 28px;
-            border-radius: 14px;
-            border: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1rem;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            box-shadow: 0 10px 20px -5px rgba(99, 102, 241, 0.4);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 25px -5px rgba(99, 102, 241, 0.5);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-3px);
-        }
-
-        /* Styling Game Ular */
-        #game-container {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(15px);
-            z-index: 100;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #game-canvas {
-            border: 4px solid var(--glass);
-            background: #000;
-            border-radius: 15px;
-            box-shadow: 0 0 30px rgba(99, 102, 241, 0.3);
-            max-width: 90vw;
-            max-height: 70vh;
-        }
-
-        .score-board {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            font-weight: 800;
-            color: var(--secondary);
-        }
-
-        .game-over-ui {
-            display: none;
-            position: absolute;
-            text-align: center;
-            background: rgba(0,0,0,0.8);
-            padding: 2rem;
-            border-radius: 20px;
-            border: 1px solid var(--primary);
-        }
-
-        .close-game {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: none;
-            color: white;
-            font-size: 2rem;
-            border: none;
-            cursor: pointer;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FahzGPT | Powered by Fahz-Team OFFC</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #0d0d0d;
+      color: #f8fafc;
+      margin: 0;
+    }
+    .vikey-gradient {
+      background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+    }
+  </style>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.40.0",
+    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.3",
+    "vite": "https://esm.sh/vite@^7.3.1"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
 </head>
 <body>
-
-    <!-- Halaman Utama Maintenance -->
-    <div class="container" id="main-content">
-        <div class="status-badge">● Server sedang Maintenance..</div>
-        <h1>FahzGPT Maintenance</h1>
-        <p>
-            FahzGPT Sedang melakukan pemeliharaan rutin, untuk menjaga kestabilan FahzGPT, Kami akan segera Kembali lagi. Terima kasih atas kesabaran Anda.
-        </p>
-        <div class="btn-group">
-            <button class="btn-primary" onclick="location.reload()">Coba Lagi</button>
-            <button class="btn-secondary" onclick="openGame()">🎮 Permainan</button>
-        </div>
-    </div>
-
-    <!-- Container Game -->
-    <div id="game-container">
-        <button class="close-game" onclick="closeGame()">&times;</button>
-        <div class="score-board">Skor: <span id="current-score">0</span></div>
-        <canvas id="game-canvas" width="400" height="400"></canvas>
-        
-        <div id="game-over-screen" class="game-over-ui">
-            <h2 style="color: #ef4444; margin-bottom: 1rem;">Game Over!</h2>
-            <button class="btn-primary" onclick="resetGame()">Main Lagi</button>
-        </div>
-
-        <p style="margin-top: 20px; font-size: 0.8rem; color: #64748b;">
-            Gunakan Tombol Panah atau Geser untuk kontrol
-        </p>
-    </div>
-
-    <script>
-        // --- LOGIC GAME ULAR ---
-        const canvas = document.getElementById("game-canvas");
-        const ctx = canvas.getContext("2d");
-        const scoreElement = document.getElementById("current-score");
-        const gameOverScreen = document.getElementById("game-over-screen");
-
-        let box = 20;
-        let snake;
-        let food;
-        let score;
-        let d;
-        let game;
-
-        function initGame() {
-            snake = [];
-            snake[0] = { x: 9 * box, y: 10 * box };
-            food = {
-                x: Math.floor(Math.random() * 19 + 1) * box,
-                y: Math.floor(Math.random() * 19 + 1) * box
-            };
-            score = 0;
-            d = null;
-            scoreElement.innerHTML = score;
-            gameOverScreen.style.display = "none";
-        }
-
-        function openGame() {
-            document.getElementById('game-container').style.display = 'flex';
-            document.getElementById('main-content').style.opacity = '0';
-            initGame();
-            if (game) clearInterval(game);
-            game = setInterval(draw, 120);
-        }
-
-        function closeGame() {
-            document.getElementById('game-container').style.display = 'none';
-            document.getElementById('main-content').style.opacity = '1';
-            clearInterval(game);
-        }
-
-        document.addEventListener("keydown", direction);
-
-        function direction(event) {
-            let key = event.keyCode;
-            if (key == 37 && d != "RIGHT") d = "LEFT";
-            else if (key == 38 && d != "DOWN") d = "UP";
-            else if (key == 39 && d != "LEFT") d = "RIGHT";
-            else if (key == 40 && d != "UP") d = "DOWN";
-        }
-
-        function collision(head, array) {
-            for (let i = 0; i < array.length; i++) {
-                if (head.x == array[i].x && head.y == array[i].y) return true;
-            }
-            return false;
-        }
-
-        function draw() {
-            ctx.fillStyle = "#000";
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Grid halus
-            ctx.strokeStyle = "rgba(255,255,255,0.05)";
-            for(let i=0; i<canvas.width; i+=box) {
-                ctx.strokeRect(i, 0, box, canvas.height);
-                ctx.strokeRect(0, i, canvas.width, box);
-            }
-
-            for (let i = 0; i < snake.length; i++) {
-                ctx.fillStyle = (i == 0) ? "#6366f1" : "#a855f7";
-                ctx.shadowBlur = 10;
-                ctx.shadowColor = (i == 0) ? "#6366f1" : "#a855f7";
-                ctx.beginPath();
-                ctx.roundRect(snake[i].x, snake[i].y, box - 2, box - 2, 5);
-                ctx.fill();
-                ctx.shadowBlur = 0;
-            }
-
-            // Food
-            ctx.fillStyle = "#fbbf24";
-            ctx.shadowBlur = 15;
-            ctx.shadowColor = "#fbbf24";
-            ctx.beginPath();
-            ctx.arc(food.x + box/2, food.y + box/2, box/2.5, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.shadowBlur = 0;
-
-            let snakeX = snake[0].x;
-            let snakeY = snake[0].y;
-
-            if (d == "LEFT") snakeX -= box;
-            if (d == "UP") snakeY -= box;
-            if (d == "RIGHT") snakeX += box;
-            if (d == "DOWN") snakeY += box;
-
-            if (snakeX == food.x && snakeY == food.y) {
-                score++;
-                scoreElement.innerHTML = score;
-                food = {
-                    x: Math.floor(Math.random() * 19 + 1) * box,
-                    y: Math.floor(Math.random() * 19 + 1) * box
-                };
-            } else {
-                snake.pop();
-            }
-
-            let newHead = { x: snakeX, y: snakeY };
-
-            if (snakeX < 0 || snakeX >= canvas.width || snakeY < 0 || snakeY >= canvas.height || collision(newHead, snake)) {
-                clearInterval(game);
-                gameOverScreen.style.display = "block";
-            }
-
-            snake.unshift(newHead);
-        }
-
-        function resetGame() {
-            initGame();
-            game = setInterval(draw, 120);
-        }
-    </script>
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
 </body>
 </html>
