@@ -1,51 +1,265 @@
-
 <!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FahzGPT Maintenance</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Inter',sans-serif;
+  background:radial-gradient(circle at 20% 20%,#1f1f2e,#0c0c15 60%);
+  color:white;
+  overflow:hidden;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.container{
+  width:95%;
+  max-width:1100px;
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(20px);
+  border-radius:25px;
+  padding:40px;
+  box-shadow:0 0 60px rgba(139,92,246,0.3);
+  animation:fadeIn 1s ease;
+  position:relative;
+}
+h1{
+  font-size:38px;
+  font-weight:800;
+  background:linear-gradient(90deg,#6366f1,#a855f7);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+p{margin-top:15px;color:#cbd5e1}
+.notice{
+  margin-top:20px;
+  padding:12px 20px;
+  background:rgba(168,85,247,0.15);
+  border-radius:12px;
+  display:inline-block;
+  font-size:14px;
+}
+.timer{
+  margin-top:20px;
+  font-size:18px;
+  font-weight:600;
+  color:#a855f7;
+}
+.buttons{
+  margin-top:30px;
+  display:flex;
+  gap:15px;
+}
+button{
+  padding:12px 25px;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
+  transition:0.3s;
+}
+.primary{
+  background:linear-gradient(90deg,#6366f1,#a855f7);
+  color:white;
+}
+.secondary{
+  background:rgba(255,255,255,0.08);
+  color:white;
+}
+button:hover{transform:scale(1.05)}
+
+#gameModal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.8);
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+.gameBox{
+  background:#0f172a;
+  padding:30px;
+  border-radius:20px;
+  text-align:center;
+  box-shadow:0 0 40px rgba(139,92,246,0.5);
+}
+canvas{
+  background:#111827;
+  border-radius:12px;
+}
+.score{
+  margin:10px 0;
+  font-weight:600;
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="maintenancePage">
+  <h1>FahzGPT Maintenance</h1>
+  <p>FahzGPT Sedang melakukan pemeliharaan rutin, untuk menjaga kestabilan FahzGPT, Kami akan segera Kembali lagi</p>
+  
+  <div class="notice">Server sedang Maintenance..</div>
+  
+  <div class="timer" id="countdown"></div>
+
+  <div class="buttons">
+    <button class="primary" onclick="location.reload()">Coba Lagi</button>
+    <button class="secondary" onclick="openGame()">Permainan</button>
+  </div>
+</div>
+
+<div id="gameModal">
+  <div class="gameBox">
+    <h2>Snake Game 🎮</h2>
+    <div class="score">Score: <span id="score">0</span></div>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <br><br>
+    <button class="primary" onclick="restartGame()">Coba Lagi</button>
+    <button class="secondary" onclick="closeGame()">Tutup</button>
+  </div>
+</div>
+
+<script>
+// ====== COUNTDOWN SYSTEM (Persist 5 menit) ======
+const maintenanceDuration = 5 * 60 * 1000;
+let startTime = localStorage.getItem("maintenanceStart");
+
+if (!startTime) {
+  startTime = Date.now();
+  localStorage.setItem("maintenanceStart", startTime);
+}
+
+function updateCountdown(){
+  const now = Date.now();
+  const elapsed = now - startTime;
+  const remaining = maintenanceDuration - elapsed;
+
+  if (remaining <= 0){
+    localStorage.setItem("maintenanceDone", "true");
+    document.documentElement.innerHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FahzGPT | Powered by Fahz-Team OFFC</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: #0d0d0d;
-      color: #f8fafc;
-      margin: 0;
-    }
-    .vikey-gradient {
-      background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-    }
-    .custom-scrollbar::-webkit-scrollbar {
-      width: 4px;
-    }
-    .custom-scrollbar::-webkit-scrollbar-track {
-      background: transparent;
-    }
-    .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 10px;
-    }
-  </style>
-<script type="importmap">
-{
-  "imports": {
-    "react": "https://esm.sh/react@^19.2.4",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
-    "react/": "https://esm.sh/react@^19.2.4/",
-    "@google/genai": "https://esm.sh/@google/genai@^1.40.0",
-    "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.3",
-    "vite": "https://esm.sh/vite@^7.3.1"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FahzGPT | Powered by Fahz-Team OFFC</title>
+<script src="https://cdn.tailwindcss.com"><\/script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{font-family:'Inter',sans-serif;background-color:#0d0d0d;color:#f8fafc;margin:0}
+<\/style>
 </head>
 <body>
-  <div id="root"></div>
-  <script type="module" src="/index.tsx"></script>
+<div style="display:flex;align-items:center;justify-content:center;height:100vh;">
+<h1>FahzGPT Sudah Kembali 🚀</h1>
+</div>
+</body>
+</html>`;
+  } else {
+    const minutes = Math.floor(remaining / 60000);
+    const seconds = Math.floor((remaining % 60000) / 1000);
+    document.getElementById("countdown").innerText =
+      "FahzGPT Diperbaiki dalam: " +
+      String(minutes).padStart(2,"0") + ":" +
+      String(seconds).padStart(2,"0");
+  }
+}
+
+setInterval(updateCountdown,1000);
+updateCountdown();
+
+// ====== GAME SNAKE ======
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+const box = 20;
+let snake, food, direction, score, game;
+
+function initGame(){
+  snake=[{x:200,y:200}];
+  food={
+    x:Math.floor(Math.random()*20)*box,
+    y:Math.floor(Math.random()*20)*box
+  };
+  direction="RIGHT";
+  score=0;
+  document.getElementById("score").innerText=score;
+  if(game) clearInterval(game);
+  game=setInterval(draw,120);
+}
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="ArrowLeft" && direction!=="RIGHT") direction="LEFT";
+  if(e.key==="ArrowUp" && direction!=="DOWN") direction="UP";
+  if(e.key==="ArrowRight" && direction!=="LEFT") direction="RIGHT";
+  if(e.key==="ArrowDown" && direction!=="UP") direction="DOWN";
+});
+
+function draw(){
+  ctx.fillStyle="#111827";
+  ctx.fillRect(0,0,400,400);
+
+  for(let i=0;i<snake.length;i++){
+    ctx.fillStyle=i===0?"#a855f7":"#6366f1";
+    ctx.fillRect(snake[i].x,snake[i].y,box,box);
+  }
+
+  ctx.fillStyle="#f43f5e";
+  ctx.fillRect(food.x,food.y,box,box);
+
+  let headX=snake[0].x;
+  let headY=snake[0].y;
+
+  if(direction==="LEFT") headX-=box;
+  if(direction==="UP") headY-=box;
+  if(direction==="RIGHT") headX+=box;
+  if(direction==="DOWN") headY+=box;
+
+  if(headX===food.x && headY===food.y){
+    score++;
+    document.getElementById("score").innerText=score;
+    food={
+      x:Math.floor(Math.random()*20)*box,
+      y:Math.floor(Math.random()*20)*box
+    };
+  } else {
+    snake.pop();
+  }
+
+  const newHead={x:headX,y:headY};
+
+  if(headX<0||headY<0||headX>=400||headY>=400||
+     snake.some(seg=>seg.x===newHead.x&&seg.y===newHead.y)){
+    clearInterval(game);
+    alert("Game Over! Score: "+score);
+  }
+
+  snake.unshift(newHead);
+}
+
+function openGame(){
+  document.getElementById("gameModal").style.display="flex";
+  initGame();
+}
+function closeGame(){
+  document.getElementById("gameModal").style.display="none";
+  clearInterval(game);
+}
+function restartGame(){
+  initGame();
+}
+</script>
+
 </body>
 </html>
